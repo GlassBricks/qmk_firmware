@@ -654,11 +654,13 @@ void keyboard_task(void) {
 #endif
 
 #ifdef OLED_ENABLE
-    oled_task();
+    if(is_keyboard_left()){
+     oled_task();
 #    if OLED_TIMEOUT > 0
     // Wake up oled if user is using those fabulous keys or spinning those encoders!
     if (activity_has_occurred) oled_on();
 #    endif
+    }
 #endif
 
 #ifdef ST7565_ENABLE
