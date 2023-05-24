@@ -18,6 +18,7 @@
 #include "transactions.h"
 #include "stdio.h"
 #include "string.h"
+#include "quantum_keycodes.h"
 
 // layout
 // clang-format off
@@ -32,36 +33,52 @@ enum layers {
     _YAY
 };
 
+#define OSM_GUI OSM(MOD_LGUI)
+#define OSM_ALT OSM(MOD_LALT)
+#define OSM_SFT OSM(MOD_LSFT)
+#define OSM_CTL OSM(MOD_LCTL)
+
+#define CTRL_A LCTL(KC_A)
+#define CTRL_Z LCTL(KC_Z)
+#define CTRL_X LCTL(KC_X)
+#define CTRL_C LCTL(KC_C)
+#define CTRL_V LCTL(KC_V)
+
+#define SPC_3 LT(3, KC_SPC)
+
+#define CNC_6 QK_MACRO_16
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT(
-		KC_TAB,		KC_Q,		KC_W,		KC_F,		KC_P,		KC_B,																		    KC_J,		KC_L,		KC_U,		KC_Y,		KC_SCLN,	KC_SLSH,
-		KC_ESC,		KC_A,		KC_R,		KC_S,		KC_T,		KC_G,																    		KC_M,		KC_N,		KC_E,		KC_I,		KC_O,		KC_BSPC,
-		KC_LCTL,	KC_Z,		KC_X,		KC_C,		KC_D,		KC_V,			KC_MINS,	    KC_BSLS,				CW_TOGG,	KC_UNDS,	KC_K,		KC_H,		KC_COMM,	KC_DOT,		KC_QUOT,	KC_ENT,
-											KC_NO,		KC_LGUI,	OSM(MOD_LSFT),	MO(3),	        MO(2),					MO(4),		KC_SPC,		MO(1),		MO(5),		KC_NO
+		KC_TAB,		KC_Q,		KC_W,		KC_F,		KC_P,		KC_B,																    KC_J,		KC_L,		KC_U,		KC_Y,		KC_SCLN,	KC_MUTE,
+		KC_ESC,		KC_A,		KC_R,		KC_S,		KC_T,		KC_G,															   		KC_M,		KC_N,		KC_E,		KC_I,		KC_O,		KC_BSPC,
+		KC_LCTL,	KC_Z,		KC_X,		KC_C,		KC_D,		KC_V,		KC_MINS,	KC_BSLS,				CW_TOGG,	KC_UNDS,	KC_K,		KC_H,		KC_COMM,	KC_DOT,		KC_QUOT,	KC_ENT,
+											KC_LGUI,	KC_NO,      KC_LSFT,	MO(3),	    MO(2),					MO(4),		KC_SPC,		MO(1),		KC_LALT,	MO(5)
 	),
 	[_SYM] = LAYOUT(
-		_______,	QK_MACRO_0,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																		KC_TILD,	KC_PIPE,	KC_AMPR,	KC_QUES,	_______,	_______,
-		_______,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,																	KC_CIRC,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	_______,
-		MO(2),		KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	KC_UNDS,		_______,				_______,	_______,	KC_DOT,		KC_LCBR,	KC_DLR,		KC_GRV,		KC_DQUO,	_______,
-											_______,	_______,	_______,	LT(3,KC_SPC),	_______,				_______,	_______,	_______,	_______,	_______
+		_______,	QK_MACRO_0,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																	KC_TILD,	KC_PIPE,	KC_AMPR,	KC_QUES,	_______,	_______,
+		KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,																KC_CIRC,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	_______,
+		MO(2),		KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	KC_UNDS,	_______,				_______,	_______,	KC_DOT,		KC_LCBR,	KC_DLR,		KC_GRV,		KC_DQUO,	_______,
+											_______,	_______,	_______,	SPC_3,	    _______,				_______,	_______,	_______,	_______,	_______
 	),
 	[_NUM] = LAYOUT(
-		_______,	KC_UNDS,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																		KC_TILD,	KC_7,		KC_8,		KC_9,		_______,	_______,
-		_______,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,																	KC_CIRC,	KC_4,		KC_5,		KC_6,		KC_0,		_______,
-		_______,	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_NUHS,	_______,		_______,				_______,	_______,	KC_DOT,		KC_1,		KC_2,		KC_3,		KC_COMM,	_______,
-											_______,	_______,	_______,	LT(3,KC_SPC),	_______,				_______,	_______,	_______,	_______,	_______
+		_______,	KC_UNDS,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																	KC_TILD,	KC_7,		KC_8,		KC_9,		_______,	_______,
+		KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,																KC_CIRC,	KC_4,		KC_5,		KC_6,		KC_0,		_______,
+		_______,	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_NUHS,	_______,	_______,				_______,	_______,	KC_DOT,		KC_1,		KC_2,		KC_3,		KC_COMM,	_______,
+											_______,	_______,	_______,	SPC_3,	    _______,				_______,	_______,	_______,	_______,	_______
 	),
 	[_EXT] = LAYOUT(
-		_______,	TO(6),			KC_ESC,			KC_SPC,			KC_ENT,			KC_NO,																	KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		KC_NO,		_______,
-		_______,	OSM(MOD_LGUI),	OSM(MOD_LALT),	OSM(MOD_LSFT),	OSM(MOD_LCTL),	LCTL(KC_A),																KC_PGDN,	KC_LEFT,	KC_DOWN,	KC_RGHT,	KC_DEL,		_______,
-		MO(4),		LCTL(KC_Z),		LCTL(KC_X),		LCTL(KC_C),		KC_TAB,			LCTL(KC_V),	_______,	KC_SCRL,				_______,	_______,	_______,	KC_BSPC,	KC_APP,		KC_INS,		KC_PSCR,	_______,
-													_______,		_______,		_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
+		_______,	TO(6),		KC_TAB,		KC_SPC,		KC_SLSH,	KC_NO,											    					KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		KC_NO,		_______,
+		_______,	OSM_GUI,	OSM_ALT,	OSM_SFT,    OSM_CTL,	CTRL_A,											    					KC_PGDN,	KC_LEFT,	KC_DOWN,	KC_RGHT,	KC_DEL,		_______,
+		MO(4),		CTRL_Z,	    CTRL_X,  	CTRL_C,		KC_TAB,		CTRL_V,	    _______,	_______,				_______,	_______,	_______,	KC_BSPC,	KC_APP,		KC_INS,		KC_PSCR,	_______,
+                                            _______,	_______,	_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
 	),
 	[_FUN] = LAYOUT(
-		_______,	_______,		KC_MPRV,		KC_MPLY,		KC_MNXT,		KC_VOLU,																_______,	KC_F7,		KC_F8,		KC_F9,		KC_F12,		_______,
-		_______,	OSM(MOD_LGUI),	OSM(MOD_LALT),	OSM(MOD_LSFT),	OSM(MOD_LCTL),	KC_VOLD,																_______,	KC_F4,		KC_F5,		KC_F6,		KC_F10,		_______,
-		_______,	_______,		_______,		_______,		LCTL(KC_TAB),	KC_MUTE,	_______,	_______,				_______,	_______,	_______,	KC_F1,		KC_F2,		KC_F3,		KC_F11,		_______,
-													_______,		_______,		_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
+		_______,	_______,	KC_MPRV,	KC_MPLY,	KC_MNXT,	KC_VOLU,												                _______,	KC_F7,		KC_F8,		KC_F9,		_______,	_______,
+		_______,	OSM_GUI,    OSM_ALT,    OSM_SFT,    OSM_CTL,	KC_VOLD,													            KC_F11,	    KC_F4,		KC_F5,		KC_F6,		KC_F10,		_______,
+		_______,	_______,	_______,	_______,	_______,	KC_MUTE,	_______,	_______,				_______,	_______,	KC_F12,	    KC_F1,		KC_F2,		KC_F3,		_______,		_______,
+											_______,	_______,	_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
 	),
 	[_ADJ] = LAYOUT(
 		EE_CLR,		RGB_RMOD,	RGB_HUI,	RGB_SAI,	RGB_VAI,	_______,																KC_WH_U,	KC_BTN1,	KC_MS_U,	KC_BTN2,	KC_ACL0,	_______,
@@ -70,13 +87,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 											_______,	_______,	_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
 	),
 	[_YAY] = LAYOUT(
-		KC_TAB,		_______,	_______,	_______,	_______,	_______,																_______,	_______,	_______,	_______,	_______,	_______,
+		_______,	_______,	_______,	_______,	_______,	_______,																_______,	_______,	_______,	_______,	_______,	_______,
 		KC_ESC,		_______,	_______,	_______,	_______,	_______,																_______,	_______,	_______,	_______,	_______,	_______,
-		_______,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	KC_BSLS,				_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,
-											_______,	TG(6),		KC_LSFT,	KC_SPC,		KC_LALT,				_______,	_______,	_______,	TG(6),		_______
+		_______,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	KC_BSLS,				XXXXXXX,	_______,	_______,	_______,	_______,	_______,	_______,	_______,
+											TG(6),  	TG(6),		KC_LSFT,	KC_SPC,		KC_LALT,				CNC_6,      CNC_6,      CNC_6,      CNC_6,      CNC_6
 	),
 };
-
 
 // clang-format on
 
@@ -129,7 +145,7 @@ void         check_status_changes(void) {
     } else if (prev_rgb_config.mode != rgb_matrix_config.mode) {
         set_status_message("RGB mode: %d", rgb_matrix_config.mode);
     } else if (prev_rgb_config.hsv.h != rgb_matrix_config.hsv.h) {
-        set_status_message("RGB hue: %d", rgb_matrix_config.hsv.h);
+        set_status_message("RGB k: %d", rgb_matrix_config.hsv.h);
     } else if (prev_rgb_config.hsv.s != rgb_matrix_config.hsv.s) {
         set_status_message("RGB sat: %d", rgb_matrix_config.hsv.s);
     } else if (prev_rgb_config.hsv.v != rgb_matrix_config.hsv.v) {
@@ -361,42 +377,70 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             set_last_layer_key(layer, index);
             break;
         }
+
+        default:
+            break;
     }
 
     return true;
+}
+
+// just color, not brightness
+typedef struct {
+    const uint8_t h, s;
+} HS;
+
+// hues
+const uint8_t mag_red    = 250;
+const uint8_t red        = 0;
+const uint8_t orange     = 30 * 17 / 24;
+const uint8_t lemon      = 40 * 17 / 24;
+const uint8_t yellow     = 60 * 17 / 24;
+const uint8_t gyellow    = 70 * 17 / 24;
+const uint8_t lime       = 80 * 17 / 24;
+const uint8_t green      = 100 * 17 / 24;
+const uint8_t mint_green = 110 * 17 / 24;
+const uint8_t blue_green = 150 * 17 / 24;
+const uint8_t light_blue = 160 * 17 / 24;
+const uint8_t dark_blue  = 240 * 17 / 24;
+const uint8_t magenta    = 280 * 17 / 24;
+const uint8_t purple     = 300 * 17 / 24;
+
+const uint8_t ctrl_hue  = green;
+const uint8_t shift_hue = lemon;
+const uint8_t alt_hue   = mag_red;
+const uint8_t super_hue = light_blue;
+
+const uint8_t base_hue = light_blue;
+const uint8_t sym_hue  = yellow;
+const uint8_t num_hue  = mag_red;
+const uint8_t ext_hue  = light_blue;
+const uint8_t fun_hue  = dark_blue;
+const uint8_t adj_hue  = mag_red;
+const uint8_t yay_hue  = orange;
+
+const uint8_t cancel_hue = mag_red;
+
+#define _US(hue) \
+    { hue, 170 }
+#define _SS(hue) \
+    { hue, 240 }
+#define _NONE \
+    { light_blue, 40 }
+#define _SPC \
+    { mint_green, 200 }
+
+HS row_color_normal[12] = {
+    _US(super_hue), _NONE, _US(shift_hue), _US(ext_hue), _US(num_hue), _US(fun_hue), _SPC, _US(sym_hue), _US(alt_hue), _US(adj_hue),
 };
 
-HSV layer_colors[7] = {
-    {105, 130, 255}, // unsaturated blue green
-    {48, 200, 255},  // yellowish
-    {200, 200, 255}, // magenta-ish
-    {128, 200, 255}, // light blue
-    {170, 200, 255}, // dark blue
-    {240, 180, 255}, // redish
-    {28, 200, 255}   // orange
-};
+HS row_color_yay[12] = {_SS(cancel_hue), _SS(cancel_hue), _US(shift_hue), _SPC, _US(alt_hue), _SS(orange), _SS(orange), _SS(orange), _SS(cancel_hue), _SS(cancel_hue)};
 
-// modifier colors (hues)
-const uint8_t ctrl_hue  = 72;  // greenish
-const uint8_t shift_hue = 35;  // yellowish
-const uint8_t alt_hue   = 250; // redish
-const uint8_t super_hue = 150; // light bluish
+HS layer_colors[7] = {
+    [_BASE] = _US(base_hue), [_SYM] = _US(sym_hue), [_NUM] = _US(num_hue), [_EXT] = _US(ext_hue), [_FUN] = _US(fun_hue), [_ADJ] = _US(adj_hue), [_YAY] = _US(yay_hue),
+};
 
 uint8_t mod_hues[] = {ctrl_hue, shift_hue, alt_hue, super_hue};
-
-uint8_t last_indexes[] = {0, 0, 0, 0};
-
-typedef struct {
-    uint8_t min, max;
-} range;
-
-range intersect(uint8_t min1, uint8_t max1, uint8_t min2, uint8_t max2) {
-    range r;
-    r.min = MAX(min1, min2);
-    r.max = MIN(max1, max2);
-
-    return r;
-}
 
 RGB color_add(RGB a, RGB b) {
     RGB c;
@@ -406,20 +450,9 @@ RGB color_add(RGB a, RGB b) {
     return c;
 }
 
-RGB blend(RGB a, RGB b, uint16_t ratio) {
-    RGB c;
-    c.r = (a.r * ratio + b.r * (255 - ratio)) / 255;
-    c.g = (a.g * ratio + b.g * (255 - ratio)) / 255;
-    c.b = (a.b * ratio + b.b * (255 - ratio)) / 255;
-    return c;
-}
-
-uint8_t top_underglow[]    = {0, 1, 2, 3, 31, 32, 33, 34};
-uint8_t bottom_underglow[] = {4, 5, 35, 36};
-
-#define FOREACH(v, arr)                                        \
-    for (uint8_t i = 0; i < sizeof(arr) / sizeof(arr[0]); i++) \
-        for (uint8_t v = arr[i], keep = 1; keep; keep = 0)
+const uint8_t top_underglow[]    = {0, 1, 2, 3, 31, 32, 33, 34};
+const uint8_t bottom_underglow[] = {4, 5, 35, 36};
+const uint8_t lower_row[12]      = {10, 9, 8, 7, 6, 37, 38, 39, 40, 41};
 
 // bool rgb_matrix_indicators_user(uint8_t led_min, uint8_t led_max) {
 bool rgb_matrix_indicators_user(void) {
@@ -446,28 +479,30 @@ bool rgb_matrix_indicators_user(void) {
         }
     }
 
-    HSV layer_hsv = layer_colors[layer];
-    layer_hsv.v   = rgb_matrix_config.hsv.v;
+    HS layer_hsv = layer_colors[layer];
 
-    RGB layer_color  = hsv_to_rgb(layer_hsv);
+    RGB layer_color  = hsv_to_rgb((HSV){layer_hsv.h, layer_hsv.s, rgb_matrix_config.hsv.v});
     RGB top_color    = layer_color;
     RGB bottom_color = color_add(layer_color, mods_color);
 
-    // for (int i = 0; i < 6; i++) {
-    //     rgb_matrix_set_color(top_underglow[i], top_color.r, top_color.g, top_color.b);
-    //     rgb_matrix_set_color(bottom_underglow[i], bottom_color.r, bottom_color.g, bottom_color.b);
-    // }
-    FOREACH(v, top_underglow) {
-        rgb_matrix_set_color(v, top_color.r, top_color.g, top_color.b);
+    for (int i = 0; i < sizeof(top_underglow) / sizeof(top_underglow[0]); i++) {
+        rgb_matrix_set_color(top_underglow[i], top_color.r, top_color.g, top_color.b);
     }
-    FOREACH(v, bottom_underglow) {
-        rgb_matrix_set_color(v, bottom_color.r, bottom_color.g, bottom_color.b);
+
+    for (int i = 0; i < sizeof(bottom_underglow) / sizeof(bottom_underglow[0]); i++) {
+        rgb_matrix_set_color(bottom_underglow[i], bottom_color.r, bottom_color.g, bottom_color.b);
+    }
+
+    HS* row_colors = layer == _YAY ? row_color_yay : row_color_normal;
+    for (int i = 0; i < 12; ++i) {
+        RGB color = hsv_to_rgb((HSV){row_colors[i].h, row_colors[i].s, rgb_matrix_config.hsv.v});
+        rgb_matrix_set_color(lower_row[i], color.r, color.g, color.b);
     }
 
     // highlight mod keys
     for (int i = 0, b = 1; i < 4; i++, b <<= 1) {
         if (b & mods) {
-            uint8_t index = last_change_keys.osm[i];
+            int8_t index = last_change_keys.osm[i];
             if (index != -1) {
                 RGB color = hsv_to_rgb((HSV){mod_hues[i], 255, rgb_matrix_config.hsv.v + 40});
                 rgb_matrix_set_color(index, color.r, color.g, color.b);
@@ -477,7 +512,7 @@ bool rgb_matrix_indicators_user(void) {
 
     // highlight layer key
     if (layer != 0) {
-        uint8_t index = last_change_keys.layer[layer];
+        int8_t index = last_change_keys.layer[layer];
         if (index != -1) {
             RGB color = hsv_to_rgb((HSV){layer_colors[layer].h, 255, rgb_matrix_config.hsv.v + 40});
             rgb_matrix_set_color(index, color.r, color.g, color.b);

@@ -27,6 +27,7 @@
 #define SPLIT_LED_STATE_ENABLE
 #define SPLIT_MODS_ENABLE
 #define SPLIT_WPM_ENABLE
+#define SPLIT_ACTIVITY_ENABLE
 
 #define SPLIT_TRANSACTION_IDS_USER LAST_LAYER_SYNC
 
@@ -35,7 +36,6 @@
 #define ONESHOT_TIMEOUT 500
 
 #define TAPPING_TERM 150
-#define IGNORE_MOD_TAP_INTERRUPT
 // #define HOLD_ON_OTHER_KEY_PRESS
 
 // encoder
@@ -125,13 +125,14 @@
 // #define DEBUG_MATRIX_SCAN_RATE
 
 // #define ACTION_DEBUG
-#define CONSOLE_ENABLE
+//#define CONSOLE_ENABLE
 
-// #ifdef CONSOLE_ENABLE
+ #ifdef CONSOLE_ENABLE
+    #define DEBUG_MATRIX_SCAN_RATE
     #ifdef NO_DEBUG
     #    undef NO_DEBUG
     #endif
     #ifdef NO_PRINT
     #    undef NO_PRINT
     #endif
-// #endif
+ #endif
