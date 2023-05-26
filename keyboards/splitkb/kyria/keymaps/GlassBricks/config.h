@@ -128,7 +128,8 @@
 //#define CONSOLE_ENABLE
 
  #ifdef CONSOLE_ENABLE
-    #define DEBUG_MATRIX_SCAN_RATE
+//    #define DEBUG_MATRIX_SCAN_RATE
+    #define ACTION_DEBUG
     #ifdef NO_DEBUG
     #    undef NO_DEBUG
     #endif

@@ -89,8 +89,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_YAY] = LAYOUT(
 		_______,	_______,	_______,	_______,	_______,	_______,																_______,	_______,	_______,	_______,	_______,	_______,
 		KC_ESC,		_______,	_______,	_______,	_______,	_______,																_______,	_______,	_______,	_______,	_______,	_______,
-		_______,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	KC_BSLS,				XXXXXXX,	_______,	_______,	_______,	_______,	_______,	_______,	_______,
-											TG(6),  	TG(6),		KC_LSFT,	KC_SPC,		KC_LALT,				CNC_6,      CNC_6,      CNC_6,      CNC_6,      CNC_6
+		_______,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	KC_BSLS,				XXXXXXX,	_______,	_______,    _______,   	_______,	_______,	_______,	_______,
+											TG(6),  	TG(6),		KC_LSFT,	KC_SPC,		KC_LALT,				MO(4),        CNC_6,      CNC_6,      CNC_6,      CNC_6
 	),
 };
 
@@ -290,6 +290,10 @@ void keyboard_post_init_user(void) {
     }
 
     prev_rgb_config = rgb_matrix_config;
+
+#ifdef ACTION_DEBUG
+    debug_enable = true;
+#endif
 }
 
 void housekeeping_task_user(void) {
@@ -320,6 +324,46 @@ void set_last_layer_key(uint8_t index, uint8_t key) {
     }
 }
 
+bool in_fake_keypress = false;
+
+keypos_t ignore_fake_pos;
+
+void unpress_keys_in_row(uint8_t row) {
+    uint8_t current_row = matrix_get_row(row);
+    for (uint8_t col = 0; col < matrix_cols(); col++) {
+        if (!(current_row & (1 << col))) continue;
+        if (row == ignore_fake_pos.row && col == ignore_fake_pos.col) continue;
+        keyevent_t fake_event = {
+            .time    = 0,
+            .type    = KEY_EVENT,
+            .pressed = false,
+            .key     = (keypos_t){.row = row, .col = col},
+        };
+        keyrecord_t key  = {.event = fake_event};
+        in_fake_keypress = true;
+        process_record(&key);
+        in_fake_keypress = false;
+    }
+}
+
+void repress_keys_in_row(uint8_t row) {
+    uint8_t current_row = matrix_get_row(row);
+    for (uint8_t col = 0; col < matrix_cols(); col++) {
+        if (!(current_row & (1 << col))) continue;
+        if (row == ignore_fake_pos.row && col == ignore_fake_pos.col) continue;
+        keyevent_t fake_event = {
+            .time    = 0,
+            .type    = KEY_EVENT,
+            .pressed = true,
+            .key     = (keypos_t){.row = row, .col = col},
+        };
+        keyrecord_t key  = {.event = fake_event};
+        in_fake_keypress = true;
+        process_record(&key);
+        in_fake_keypress = false;
+    }
+}
+
 // process record stuff
 
 // KC_LEFT_CTRL = 0x00E0,
@@ -337,6 +381,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             SEND_STRING("...");
             return false;
         }
+        case QK_MACRO_16: {
+            layer_off(6);
+            return true;
+        }
+
         // check for normal modifiers
         case KC_LEFT_CTRL ... KC_RIGHT_GUI: {
             uint8_t row     = record->event.key.row;
@@ -382,9 +431,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             break;
     }
 
+    if (!in_fake_keypress && get_highest_layer(layer_state) == 6 && is_key_pressed(keyboard_report, KC_SPACE) && record->event.key.row >= 4) {
+        ignore_fake_pos = record->event.key;
+
+        // un press all pressed keys
+        for (uint8_t row = 0; row < 7; row++)
+            unpress_keys_in_row(row);
+
+        layer_off(6);
+
+        for (int row = 3; row >= 0; row--)
+            repress_keys_in_row(row);
+        // don't include row 7 (right half bottom row)
+        for (int row = 6; row >= 4; row--)
+            repress_keys_in_row(row);
+
+        if (keycode == KC_H) {
+            // tap another backspace
+            tap_code(KC_BSPC);
+        }
+
+        return true;
+    }
+
     return true;
 }
-
 // just color, not brightness
 typedef struct {
     const uint8_t h, s;
@@ -413,10 +484,10 @@ const uint8_t super_hue = light_blue;
 
 const uint8_t base_hue = light_blue;
 const uint8_t sym_hue  = yellow;
-const uint8_t num_hue  = mag_red;
+const uint8_t num_hue  = purple;
 const uint8_t ext_hue  = light_blue;
 const uint8_t fun_hue  = dark_blue;
-const uint8_t adj_hue  = mag_red;
+const uint8_t adj_hue  = magenta;
 const uint8_t yay_hue  = orange;
 
 const uint8_t cancel_hue = mag_red;

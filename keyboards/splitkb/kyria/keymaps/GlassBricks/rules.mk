@@ -11,6 +11,8 @@ CAPS_WORD_ENABLE = yes
 
 WPM_ENABLE = yes
 
+NKRO_ENABLE = yes
+
 
 
 COMBO_ENABLE = no
