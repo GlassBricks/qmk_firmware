@@ -42,9 +42,10 @@
 
 #define ENCODER_RESOLUTION 2
 
-// wpm
+// oled
 
-#define WPM_LAUNCH_CONTROL
+#define OLED_TIMEOUT 30000
+#define OLED_FADE_OUT_INTERVAL 5
 
 // rgb
 

@@ -27,10 +27,12 @@ enum layers {
     _BASE=0,
     _SYM,
     _NUM,
+    _SYM2,
     _EXT,
+    _YAY,
     _FUN,
     _ADJ,
-    _YAY
+    _MAX = _ADJ
 };
 
 #define OSM_GUI OSM(MOD_LGUI)
@@ -44,53 +46,56 @@ enum layers {
 #define CTRL_C LCTL(KC_C)
 #define CTRL_V LCTL(KC_V)
 
-#define SPC_3 LT(3, KC_SPC)
+#define SPC_EXT LT(_EXT, KC_SPC)
 
-#define CNC_6 QK_MACRO_16
+#define CANCEL_6 QK_MACRO_16
+#define ALT_TO6 QK_MACRO_15
 
+#define SYM_LAYER LAYOUT( \
+_______,	KC_SCRL,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																    KC_CIRC,	KC_PIPE,	KC_QUES,    KC_AMPR,	KC_SCLN,	_______,    \
+KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,														    	KC_TILD,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	MC_0,       \
+MO(_NUM),	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	KC_UNDS,	_______,				_______,	_______,	KC_GRV,		KC_LCBR,	KC_DLR,		KC_DOT,		KC_DQUO,	_______,    \
+                                    _______,	_______,	_______,	SPC_EXT,    _______,				_______,	_______,	_______,	_______,	_______                                         \
+)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT(
-		KC_TAB,		KC_Q,		KC_W,		KC_F,		KC_P,		KC_B,																    KC_J,		KC_L,		KC_U,		KC_Y,		KC_SCLN,	KC_MUTE,
-		KC_ESC,		KC_A,		KC_R,		KC_S,		KC_T,		KC_G,															   		KC_M,		KC_N,		KC_E,		KC_I,		KC_O,		KC_BSPC,
-		KC_LCTL,	KC_Z,		KC_X,		KC_C,		KC_D,		KC_V,		KC_MINS,	KC_BSLS,				CW_TOGG,	KC_UNDS,	KC_K,		KC_H,		KC_COMM,	KC_DOT,		KC_QUOT,	KC_ENT,
-											KC_LGUI,	KC_NO,      KC_LSFT,	MO(3),	    MO(2),					MO(4),		KC_SPC,		MO(1),		KC_LALT,	MO(5)
+		KC_TAB,		KC_Q,		KC_W,		KC_F,		KC_P,		KC_B,															    KC_J,		KC_L,		KC_U,		KC_Y,		KC_SCLN,	KC_MUTE,
+		KC_ESC,		KC_A,		KC_R,		KC_S,		KC_T,		KC_G,														   		KC_M,		KC_N,		KC_E,		KC_I,		KC_O,		KC_MINS,
+		KC_LCTL,	KC_Z,		KC_X,		KC_C,		KC_D,		KC_V,		KC_SPC, 	KC_BSLS,			CW_TOGG,	KC_UNDS,	KC_K,		KC_H,		KC_COMM,	KC_DOT,		KC_QUOT,	KC_ENT,
+											KC_LGUI,	XXXXXXX,    KC_LSFT,	MO(_EXT),	MO(_NUM),			MO(_FUN),	KC_SPC,		MO(_SYM),	KC_LALT,	MO(_ADJ)
 	),
-	[_SYM] = LAYOUT(
-		_______,	QK_MACRO_0,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																	KC_TILD,	KC_PIPE,	KC_AMPR,	KC_QUES,	_______,	_______,
-		KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,																KC_CIRC,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	_______,
-		MO(2),		KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	KC_UNDS,	_______,				_______,	_______,	KC_DOT,		KC_LCBR,	KC_DLR,		KC_GRV,		KC_DQUO,	_______,
-											_______,	_______,	_______,	SPC_3,	    _______,				_______,	_______,	_______,	_______,	_______
-	),
+	[_SYM] = SYM_LAYER,
 	[_NUM] = LAYOUT(
-		_______,	KC_UNDS,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																	KC_TILD,	KC_7,		KC_8,		KC_9,		_______,	_______,
-		KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,																KC_CIRC,	KC_4,		KC_5,		KC_6,		KC_0,		_______,
-		_______,	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_NUHS,	_______,	_______,				_______,	_______,	KC_DOT,		KC_1,		KC_2,		KC_3,		KC_COMM,	_______,
-											_______,	_______,	_______,	SPC_3,	    _______,				_______,	_______,	_______,	_______,	_______
+		_______,	ALT_TO6,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																KC_CIRC,	KC_7,		KC_8,		KC_9,		_______,	_______,
+		KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,															KC_TILD,	KC_4,		KC_5,		KC_6,		KC_0,		_______,
+		_______,	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	_______,	_______,			_______,	_______,    KC_BSPC,    KC_1,		KC_2,		KC_3,		KC_COMM,	_______,
+											_______,	_______,	_______,	SPC_EXT,    _______,			KC_DOT,	    _______,	MO(_SYM2), 	_______,	_______
 	),
+    [_SYM2] = SYM_LAYER,
 	[_EXT] = LAYOUT(
-		_______,	TO(6),		KC_TAB,		KC_SPC,		KC_SLSH,	KC_NO,											    					KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		KC_NO,		_______,
-		_______,	OSM_GUI,	OSM_ALT,	OSM_SFT,    OSM_CTL,	CTRL_A,											    					KC_PGDN,	KC_LEFT,	KC_DOWN,	KC_RGHT,	KC_DEL,		_______,
-		MO(4),		CTRL_Z,	    CTRL_X,  	CTRL_C,		KC_TAB,		CTRL_V,	    _______,	_______,				_______,	_______,	_______,	KC_BSPC,	KC_APP,		KC_INS,		KC_PSCR,	_______,
-                                            _______,	_______,	_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
+		_______,	TO(_YAY),	KC_TAB,		XXXXXXX,	OSM_ALT,	XXXXXXX,									    					KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		XXXXXXX,	_______,
+		_______,	OSM_GUI,	OSM_ALT,	OSM_SFT,    OSM_CTL,	CTRL_A,										    					KC_PGDN,	KC_LEFT,	KC_DOWN,	KC_RGHT,	KC_DEL,		_______,
+		MO(_FUN),	CTRL_Z,	    CTRL_X,  	CTRL_C,		KC_TAB,		CTRL_V,     _______,	_______,			_______,	_______,	_______,	KC_BSPC,	KC_APP,		KC_INS,		KC_PSCR,	_______,
+                                            _______,	_______,	_______,	_______,	_______,			_______,	_______,	_______,	_______,	_______
 	),
 	[_FUN] = LAYOUT(
-		_______,	_______,	KC_MPRV,	KC_MPLY,	KC_MNXT,	KC_VOLU,												                _______,	KC_F7,		KC_F8,		KC_F9,		_______,	_______,
-		_______,	OSM_GUI,    OSM_ALT,    OSM_SFT,    OSM_CTL,	KC_VOLD,													            KC_F11,	    KC_F4,		KC_F5,		KC_F6,		KC_F10,		_______,
-		_______,	_______,	_______,	_______,	_______,	KC_MUTE,	_______,	_______,				_______,	_______,	KC_F12,	    KC_F1,		KC_F2,		KC_F3,		_______,		_______,
-											_______,	_______,	_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
+		_______,	_______,	KC_MPRV,	KC_MPLY,	KC_MNXT,	KC_VOLU,											                _______,	KC_F7,		KC_F8,		KC_F9,		_______,	_______,
+		_______,	OSM_GUI,    OSM_ALT,    OSM_SFT,    OSM_CTL,	KC_VOLD,												            KC_F11,	    KC_F4,		KC_F5,		KC_F6,		KC_F10,		_______,
+		_______,	_______,	_______,	_______,	_______,	KC_MUTE,	_______,	_______,			_______,	_______,	KC_F12,	    KC_F1,		KC_F2,		KC_F3,		_______,	_______,
+											_______,	_______,	_______,	_______,	_______,			_______,	_______,	_______,	_______,	_______
 	),
 	[_ADJ] = LAYOUT(
-		EE_CLR,		RGB_RMOD,	RGB_HUI,	RGB_SAI,	RGB_VAI,	_______,																KC_WH_U,	KC_BTN1,	KC_MS_U,	KC_BTN2,	KC_ACL0,	_______,
-		_______,	RGB_MOD,	RGB_HUD,	RGB_SAD,	RGB_VAD,	RGB_TOG,																KC_WH_D,	KC_MS_L,	KC_MS_D,	KC_MS_R,	KC_ACL1,	_______,
-		_______,	_______,	_______,	RGB_SPD,	RGB_SPI,	_______,	_______,	_______,				_______,	_______,	_______,	KC_BTN4,	KC_BTN3,	KC_BTN5,	KC_ACL2,	_______,
-											_______,	_______,	_______,	_______,	_______,				_______,	_______,	_______,	_______,	_______
+		EE_CLR,		RGB_RMOD,	RGB_HUI,	RGB_SAI,	RGB_VAI,	_______,															KC_WH_U,	KC_BTN1,	KC_MS_U,	KC_BTN2,	KC_ACL0,	_______,
+		_______,	RGB_MOD,	RGB_HUD,	RGB_SAD,	RGB_VAD,	RGB_TOG,															KC_WH_D,	KC_MS_L,	KC_MS_D,	KC_MS_R,	KC_ACL1,	_______,
+		_______,	_______,	_______,	RGB_SPD,	RGB_SPI,	_______,	_______,	_______,			_______,	_______,	_______,	KC_BTN4,	KC_BTN3,	KC_BTN5,	KC_ACL2,	_______,
+											_______,	_______,	_______,	_______,	_______,			_______,	_______,	_______,	_______,	_______
 	),
 	[_YAY] = LAYOUT(
-		_______,	_______,	_______,	_______,	_______,	_______,																_______,	_______,	_______,	_______,	_______,	_______,
-		KC_ESC,		_______,	_______,	_______,	_______,	_______,																_______,	_______,	_______,	_______,	_______,	_______,
-		_______,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	KC_BSLS,				XXXXXXX,	_______,	_______,    _______,   	_______,	_______,	_______,	_______,
-											TG(6),  	TG(6),		KC_LSFT,	KC_SPC,		KC_LALT,				MO(4),        CNC_6,      CNC_6,      CNC_6,      CNC_6
+		_______,	_______,	_______,	_______,	_______,	_______,															_______,	_______,	_______,	_______,	_______,	_______,
+		KC_ESC,		_______,	_______,	_______,	_______,	_______,															_______,	_______,	_______,	_______,	_______,	_______,
+		KC_LCTL,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	KC_BSLS,			XXXXXXX,	_______,	_______,    _______,   	_______,	_______,	_______,	CANCEL_6,
+											TG(_YAY),  	TG(_YAY),	KC_LSFT,	KC_SPC,		KC_LALT,			MO(_FUN),   CANCEL_6,   CANCEL_6,   CANCEL_6,   CANCEL_6
 	),
 };
 
@@ -102,11 +107,6 @@ char      status_message[30];
 int32_t   status_message_time     = 0;
 const int STATUS_MESSAGE_DURATION = 5000; // 5 seconds
 
-// inline void set_status_message(const char *format, ...) {
-//     // snprintf(status_message, sizeof(status_message), "%s", message);
-//     snprintf(status_message, sizeof(status_message), format, __VA_ARGS__);
-//     status_message_time = timer_read32();
-// }
 #define set_status_message(...)                                        \
     {                                                                  \
         snprintf(status_message, sizeof(status_message), __VA_ARGS__); \
@@ -131,7 +131,8 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 // rgb_config_t rgb_matrix_config;
 
 rgb_config_t prev_rgb_config;
-void         check_status_changes(void) {
+
+void check_status_changes(void) {
     if (memcmp(&prev_rgb_config, &rgb_matrix_config, sizeof(rgb_config_t)) == 0) {
         return;
     }
@@ -145,7 +146,7 @@ void         check_status_changes(void) {
     } else if (prev_rgb_config.mode != rgb_matrix_config.mode) {
         set_status_message("RGB mode: %d", rgb_matrix_config.mode);
     } else if (prev_rgb_config.hsv.h != rgb_matrix_config.hsv.h) {
-        set_status_message("RGB k: %d", rgb_matrix_config.hsv.h);
+        set_status_message("RGB hue: %d", rgb_matrix_config.hsv.h);
     } else if (prev_rgb_config.hsv.s != rgb_matrix_config.hsv.s) {
         set_status_message("RGB sat: %d", rgb_matrix_config.hsv.s);
     } else if (prev_rgb_config.hsv.v != rgb_matrix_config.hsv.v) {
@@ -172,25 +173,26 @@ bool oled_task_user(void) {
         // Layer Status
         oled_write_P(PSTR("Layer: "), false);
         switch (get_highest_layer(layer_state | default_layer_state)) {
-            case 0:
+            case _BASE:
                 oled_write_P(PSTR("Base\n"), false);
                 break;
-            case 1:
+            case _SYM:
+            case _SYM2:
                 oled_write_P(PSTR("Sym\n"), false);
                 break;
-            case 2:
+            case _NUM:
                 oled_write_P(PSTR("Num\n"), false);
                 break;
-            case 3:
+            case _EXT:
                 oled_write_P(PSTR("Ext\n"), false);
                 break;
-            case 4:
+            case _FUN:
                 oled_write_P(PSTR("Fun\n"), false);
                 break;
-            case 5:
-                oled_write_P(PSTR("Mouse\n"), false);
+            case _ADJ:
+                oled_write_P(PSTR("ADJ\n"), false);
                 break;
-            case 6:
+            case _YAY:
                 oled_write_P(PSTR("Yay\n"), false);
                 break;
             default:
@@ -205,16 +207,6 @@ bool oled_task_user(void) {
 
         oled_write_P(PSTR("\n"), false);
 
-        // WPM
-        uint8_t     wpm = get_current_wpm();
-        static char wpm_str[10];
-        if (wpm > 40) {
-            snprintf(wpm_str, sizeof(wpm_str), "WPM: %3d", wpm);
-        } else {
-            wpm_str[0] = '\0';
-        }
-        oled_write_ln(wpm_str, false);
-
         // status message
         if (timer_elapsed32(status_message_time) < STATUS_MESSAGE_DURATION) {
             oled_write_ln(status_message, false);
@@ -222,19 +214,19 @@ bool oled_task_user(void) {
             oled_write_ln(PSTR(""), false);
         }
     } else {
-        // // clang-format off
-        // static const char PROGMEM kyria_logo[] = {
-        //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,128,128,192,224,240,112,120, 56, 60, 28, 30, 14, 14, 14,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7, 14, 14, 14, 30, 28, 60, 56,120,112,240,224,192,128,128,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //     0,  0,  0,  0,  0,  0,  0,192,224,240,124, 62, 31, 15,  7,  3,  1,128,192,224,240,120, 56, 60, 28, 30, 14, 14,  7,  7,135,231,127, 31,255,255, 31,127,231,135,  7,  7, 14, 14, 30, 28, 60, 56,120,240,224,192,128,  1,  3,  7, 15, 31, 62,124,240,224,192,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //     0,  0,  0,  0,240,252,255, 31,  7,  1,  0,  0,192,240,252,254,255,247,243,177,176, 48, 48, 48, 48, 48, 48, 48,120,254,135,  1,  0,  0,255,255,  0,  0,  1,135,254,120, 48, 48, 48, 48, 48, 48, 48,176,177,243,247,255,254,252,240,192,  0,  0,  1,  7, 31,255,252,240,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //     0,  0,  0,255,255,255,  0,  0,  0,  0,  0,254,255,255,  1,  1,  7, 30,120,225,129,131,131,134,134,140,140,152,152,177,183,254,248,224,255,255,224,248,254,183,177,152,152,140,140,134,134,131,131,129,225,120, 30,  7,  1,  1,255,255,254,  0,  0,  0,  0,  0,255,255,255,  0,  0,  0,  0,255,255,  0,  0,192,192, 48, 48,  0,  0,240,240,  0,  0,  0,  0,  0,  0,240,240,  0,  0,240,240,192,192, 48, 48, 48, 48,192,192,  0,  0, 48, 48,243,243,  0,  0,  0,  0,  0,  0, 48, 48, 48, 48, 48, 48,192,192,  0,  0,  0,  0,  0,
-        //     0,  0,  0,255,255,255,  0,  0,  0,  0,  0,127,255,255,128,128,224,120, 30,135,129,193,193, 97, 97, 49, 49, 25, 25,141,237,127, 31,  7,255,255,  7, 31,127,237,141, 25, 25, 49, 49, 97, 97,193,193,129,135, 30,120,224,128,128,255,255,127,  0,  0,  0,  0,  0,255,255,255,  0,  0,  0,  0, 63, 63,  3,  3, 12, 12, 48, 48,  0,  0,  0,  0, 51, 51, 51, 51, 51, 51, 15, 15,  0,  0, 63, 63,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 48, 48, 63, 63, 48, 48,  0,  0, 12, 12, 51, 51, 51, 51, 51, 51, 63, 63,  0,  0,  0,  0,  0,
-        //     0,  0,  0,  0, 15, 63,255,248,224,128,  0,  0,  3, 15, 63,127,255,239,207,141, 13, 12, 12, 12, 12, 12, 12, 12, 30,127,225,128,  0,  0,255,255,  0,  0,128,225,127, 30, 12, 12, 12, 12, 12, 12, 12, 13,141,207,239,255,127, 63, 15,  3,  0,  0,128,224,248,255, 63, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //     0,  0,  0,  0,  0,  0,  0,  3,  7, 15, 62,124,248,240,224,192,128,  1,  3,  7, 15, 30, 28, 60, 56,120,112,112,224,224,225,231,254,248,255,255,248,254,231,225,224,224,112,112,120, 56, 60, 28, 30, 15,  7,  3,  1,128,192,224,240,248,124, 62, 15,  7,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  3,  7, 15, 14, 30, 28, 60, 56,120,112,112,112,224,224,224,224,224,224,224,224,224,224,224,224,224,224,224,224,112,112,112,120, 56, 60, 28, 30, 14, 15,  7,  3,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-        // };
-        // // clang-format on
-        // oled_write_raw_P(kyria_logo, sizeof(kyria_logo));
+        // clang-format off
+        static const char PROGMEM kyria_logo[] = {
+             0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,128,128,192,224,240,112,120, 56, 60, 28, 30, 14, 14, 14,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7, 14, 14, 14, 30, 28, 60, 56,120,112,240,224,192,128,128,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+             0,  0,  0,  0,  0,  0,  0,192,224,240,124, 62, 31, 15,  7,  3,  1,128,192,224,240,120, 56, 60, 28, 30, 14, 14,  7,  7,135,231,127, 31,255,255, 31,127,231,135,  7,  7, 14, 14, 30, 28, 60, 56,120,240,224,192,128,  1,  3,  7, 15, 31, 62,124,240,224,192,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+             0,  0,  0,  0,240,252,255, 31,  7,  1,  0,  0,192,240,252,254,255,247,243,177,176, 48, 48, 48, 48, 48, 48, 48,120,254,135,  1,  0,  0,255,255,  0,  0,  1,135,254,120, 48, 48, 48, 48, 48, 48, 48,176,177,243,247,255,254,252,240,192,  0,  0,  1,  7, 31,255,252,240,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+             0,  0,  0,255,255,255,  0,  0,  0,  0,  0,254,255,255,  1,  1,  7, 30,120,225,129,131,131,134,134,140,140,152,152,177,183,254,248,224,255,255,224,248,254,183,177,152,152,140,140,134,134,131,131,129,225,120, 30,  7,  1,  1,255,255,254,  0,  0,  0,  0,  0,255,255,255,  0,  0,  0,  0,255,255,  0,  0,192,192, 48, 48,  0,  0,240,240,  0,  0,  0,  0,  0,  0,240,240,  0,  0,240,240,192,192, 48, 48, 48, 48,192,192,  0,  0, 48, 48,243,243,  0,  0,  0,  0,  0,  0, 48, 48, 48, 48, 48, 48,192,192,  0,  0,  0,  0,  0,
+             0,  0,  0,255,255,255,  0,  0,  0,  0,  0,127,255,255,128,128,224,120, 30,135,129,193,193, 97, 97, 49, 49, 25, 25,141,237,127, 31,  7,255,255,  7, 31,127,237,141, 25, 25, 49, 49, 97, 97,193,193,129,135, 30,120,224,128,128,255,255,127,  0,  0,  0,  0,  0,255,255,255,  0,  0,  0,  0, 63, 63,  3,  3, 12, 12, 48, 48,  0,  0,  0,  0, 51, 51, 51, 51, 51, 51, 15, 15,  0,  0, 63, 63,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 48, 48, 63, 63, 48, 48,  0,  0, 12, 12, 51, 51, 51, 51, 51, 51, 63, 63,  0,  0,  0,  0,  0,
+             0,  0,  0,  0, 15, 63,255,248,224,128,  0,  0,  3, 15, 63,127,255,239,207,141, 13, 12, 12, 12, 12, 12, 12, 12, 30,127,225,128,  0,  0,255,255,  0,  0,128,225,127, 30, 12, 12, 12, 12, 12, 12, 12, 13,141,207,239,255,127, 63, 15,  3,  0,  0,128,224,248,255, 63, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+             0,  0,  0,  0,  0,  0,  0,  3,  7, 15, 62,124,248,240,224,192,128,  1,  3,  7, 15, 30, 28, 60, 56,120,112,112,224,224,225,231,254,248,255,255,248,254,231,225,224,224,112,112,120, 56, 60, 28, 30, 15,  7,  3,  1,128,192,224,240,248,124, 62, 15,  7,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+             0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  3,  7, 15, 14, 30, 28, 60, 56,120,112,112,112,224,224,224,224,224,224,224,224,224,224,224,224,224,224,224,224,112,112,112,120, 56, 60, 28, 30, 14, 15,  7,  3,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+        };
+        // clang-format on
+        oled_write_raw_P(kyria_logo, sizeof(kyria_logo));
     }
     return false;
 }
@@ -326,42 +318,17 @@ void set_last_layer_key(uint8_t index, uint8_t key) {
 
 bool in_fake_keypress = false;
 
-keypos_t ignore_fake_pos;
-
-void unpress_keys_in_row(uint8_t row) {
-    uint8_t current_row = matrix_get_row(row);
-    for (uint8_t col = 0; col < matrix_cols(); col++) {
-        if (!(current_row & (1 << col))) continue;
-        if (row == ignore_fake_pos.row && col == ignore_fake_pos.col) continue;
-        keyevent_t fake_event = {
-            .time    = 0,
-            .type    = KEY_EVENT,
-            .pressed = false,
-            .key     = (keypos_t){.row = row, .col = col},
-        };
-        keyrecord_t key  = {.event = fake_event};
-        in_fake_keypress = true;
-        process_record(&key);
-        in_fake_keypress = false;
-    }
-}
-
-void repress_keys_in_row(uint8_t row) {
-    uint8_t current_row = matrix_get_row(row);
-    for (uint8_t col = 0; col < matrix_cols(); col++) {
-        if (!(current_row & (1 << col))) continue;
-        if (row == ignore_fake_pos.row && col == ignore_fake_pos.col) continue;
-        keyevent_t fake_event = {
-            .time    = 0,
-            .type    = KEY_EVENT,
-            .pressed = true,
-            .key     = (keypos_t){.row = row, .col = col},
-        };
-        keyrecord_t key  = {.event = fake_event};
-        in_fake_keypress = true;
-        process_record(&key);
-        in_fake_keypress = false;
-    }
+void fake_keypress(uint8_t row, uint8_t col, bool pressed) {
+    keyevent_t fake_event = {
+        .time    = 0,
+        .type    = KEY_EVENT,
+        .pressed = pressed,
+        .key     = (keypos_t){.row = row, .col = col},
+    };
+    keyrecord_t key  = {.event = fake_event};
+    in_fake_keypress = true;
+    process_record(&key);
+    in_fake_keypress = false;
 }
 
 // process record stuff
@@ -381,11 +348,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             SEND_STRING("...");
             return false;
         }
-        case QK_MACRO_16: {
-            layer_off(6);
+        case CANCEL_6: {
+            layer_off(_YAY);
             return true;
         }
-
+        case ALT_TO6: {
+            bool alt_pressed = matrix_is_on(3, 0);
+            if (alt_pressed) fake_keypress(3, 0, false);
+            layer_move(_YAY);
+            if (alt_pressed) fake_keypress(3, 0, true);
+            return false;
+        }
         // check for normal modifiers
         case KC_LEFT_CTRL ... KC_RIGHT_GUI: {
             uint8_t row     = record->event.key.row;
@@ -431,29 +404,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             break;
     }
 
-    if (!in_fake_keypress && get_highest_layer(layer_state) == 6 && is_key_pressed(keyboard_report, KC_SPACE) && record->event.key.row >= 4) {
-        ignore_fake_pos = record->event.key;
+    // if in layer 6, and any left thumb keys + right side is pressed, disable layer 6 and repress as if in layer 0
+    if (!in_fake_keypress && get_highest_layer(layer_state) == _YAY // in layer
+        && matrix_get_row(3)                                        // left thumb keys
+        && record->event.key.row >= 4                               // right side
+    ) {
+        // un press all keys in earlier rows
+        for (uint8_t row = 0; row <= record->event.key.row; row++) {
+            uint8_t currentRow = matrix_get_row(row);
+            uint8_t max_col    = row == record->event.key.row ? record->event.key.col : matrix_cols();
+            for (uint8_t col = 0; col < max_col; col++) {
+                if (row == record->event.key.row && col == record->event.key.col) break;
+                if ((currentRow & (1 << col)) != 0) {
+                    fake_keypress(row, col, false);
+                }
+            }
+        }
 
-        // un press all pressed keys
-        for (uint8_t row = 0; row < 7; row++)
-            unpress_keys_in_row(row);
-
-        layer_off(6);
-
-        for (int row = 3; row >= 0; row--)
-            repress_keys_in_row(row);
-        // don't include row 7 (right half bottom row)
-        for (int row = 6; row >= 4; row--)
-            repress_keys_in_row(row);
-
-        if (keycode == KC_H) {
-            // tap another backspace
+        // super common exception (ext+h == bspc), tap an extra backspace
+        if (keycode == KC_H && matrix_is_on(3, 5)) {
             tap_code(KC_BSPC);
         }
 
+        layer_off(_YAY);
+
+        // do left half represses from bottom to top (so thumb keys are pressed first)
+        for (int row = 3; row >= 0; row--) {
+            uint8_t currentRow = matrix_get_row(row);
+            for (uint8_t col = 0; col < matrix_cols(); col++) {
+                if ((currentRow & (1 << col)) != 0) fake_keypress(row, col, true);
+            }
+        }
+
+        // right half in normal order
+        for (int row = 4; row <= record->event.key.row; row++) {
+            uint8_t currentRow = matrix_get_row(row);
+            uint8_t max_col    = row == record->event.key.row ? record->event.key.col : matrix_cols();
+            for (uint8_t col = 0; col < max_col; col++) {
+                if ((currentRow & (1 << col)) != 0) fake_keypress(row, col, true);
+            }
+        }
         return true;
     }
-
     return true;
 }
 // just color, not brightness
@@ -507,8 +499,8 @@ HS row_color_normal[12] = {
 
 HS row_color_yay[12] = {_SS(cancel_hue), _SS(cancel_hue), _US(shift_hue), _SPC, _US(alt_hue), _SS(orange), _SS(orange), _SS(orange), _SS(cancel_hue), _SS(cancel_hue)};
 
-HS layer_colors[7] = {
-    [_BASE] = _US(base_hue), [_SYM] = _US(sym_hue), [_NUM] = _US(num_hue), [_EXT] = _US(ext_hue), [_FUN] = _US(fun_hue), [_ADJ] = _US(adj_hue), [_YAY] = _US(yay_hue),
+HS layer_colors[_MAX + 1] = {
+    [_BASE] = _US(base_hue), [_SYM] = _US(sym_hue), [_NUM] = _US(num_hue), [_SYM2] = _US(sym_hue), [_EXT] = _US(ext_hue), [_FUN] = _US(fun_hue), [_ADJ] = _US(adj_hue), [_YAY] = _US(yay_hue),
 };
 
 uint8_t mod_hues[] = {ctrl_hue, shift_hue, alt_hue, super_hue};
@@ -528,7 +520,7 @@ const uint8_t lower_row[12]      = {10, 9, 8, 7, 6, 37, 38, 39, 40, 41};
 // bool rgb_matrix_indicators_user(uint8_t led_min, uint8_t led_max) {
 bool rgb_matrix_indicators_user(void) {
     uint8_t layer = get_highest_layer(layer_state | default_layer_state);
-    if (layer > 6) return false;
+    if (layer > _MAX) return false;
 
     uint8_t mods = get_mods() | get_oneshot_mods();
 
