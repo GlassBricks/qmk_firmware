@@ -19,21 +19,12 @@
 #include "stdio.h"
 #include "string.h"
 #include "quantum_keycodes.h"
+#include "keymap_introspection.h"
+#include "features/custom_shift_keys.h"
 
 // layout
-// clang-format off
 
-enum layers {
-    _BASE=0,
-    _SYM,
-    _NUM,
-    _SYM2,
-    _EXT,
-    _YAY,
-    _FUN,
-    _ADJ,
-    _MAX = _ADJ
-};
+enum layers { _BASE = 0, _SYM, _NUM, _EXT, _YAY, _FUN, _ADJ, _MAX = _ADJ };
 
 #define OSM_GUI OSM(MOD_LGUI)
 #define OSM_ALT OSM(MOD_LALT)
@@ -48,31 +39,32 @@ enum layers {
 
 #define SPC_EXT LT(_EXT, KC_SPC)
 
-#define CANCEL_6 QK_MACRO_16
-#define ALT_TO6 QK_MACRO_15
+enum custom_keycodes {
+    CANCEL_6 = QK_USER,
+    ALT_TO6,
+    FUN_NUM,
+};
 
-#define SYM_LAYER LAYOUT( \
-_______,	KC_SCRL,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																    KC_CIRC,	KC_PIPE,	KC_QUES,    KC_AMPR,	KC_SCLN,	_______,    \
-KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,														    	KC_TILD,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	MC_0,       \
-MO(_NUM),	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	KC_UNDS,	_______,				_______,	_______,	KC_GRV,		KC_LCBR,	KC_DLR,		KC_DOT,		KC_DQUO,	_______,    \
-                                    _______,	_______,	_______,	SPC_EXT,    _______,				_______,	_______,	_______,	_______,	_______                                         \
-)
-
+// clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT(
 		KC_TAB,		KC_Q,		KC_W,		KC_F,		KC_P,		KC_B,															    KC_J,		KC_L,		KC_U,		KC_Y,		KC_SCLN,	KC_MUTE,
 		KC_ESC,		KC_A,		KC_R,		KC_S,		KC_T,		KC_G,														   		KC_M,		KC_N,		KC_E,		KC_I,		KC_O,		KC_MINS,
 		KC_LCTL,	KC_Z,		KC_X,		KC_C,		KC_D,		KC_V,		KC_SPC, 	KC_BSLS,			CW_TOGG,	KC_UNDS,	KC_K,		KC_H,		KC_COMM,	KC_DOT,		KC_QUOT,	KC_ENT,
-											KC_LGUI,	XXXXXXX,    KC_LSFT,	MO(_EXT),	MO(_NUM),			MO(_FUN),	KC_SPC,		MO(_SYM),	KC_LALT,	MO(_ADJ)
+											KC_LGUI,	XXXXXXX,    KC_LSFT,	MO(_EXT),	MO(_NUM),			FUN_NUM,	KC_SPC,		MO(_SYM),	KC_LALT,	MO(_ADJ)
 	),
-	[_SYM] = SYM_LAYER,
+	[_SYM] = LAYOUT (
+        _______,	KC_SCRL,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																    KC_CIRC,	KC_PIPE,	KC_QUES,    KC_AMPR,	KC_SCLN,	_______,
+        KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,														    	KC_TILD,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	MC_0,
+        MO(_NUM),	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	KC_UNDS,	_______,			_______,	_______,	KC_GRV,		KC_LCBR,	KC_DLR,		KC_DOT,		KC_DQUO,	_______,
+                                            _______,	_______,	_______,	SPC_EXT,    _______,			_______,	_______,	_______,	_______,	_______
+    ),
 	[_NUM] = LAYOUT(
 		_______,	ALT_TO6,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																KC_CIRC,	KC_7,		KC_8,		KC_9,		_______,	_______,
 		KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,															KC_TILD,	KC_4,		KC_5,		KC_6,		KC_0,		_______,
 		_______,	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	_______,	_______,			_______,	_______,    KC_BSPC,    KC_1,		KC_2,		KC_3,		KC_COMM,	_______,
-											_______,	_______,	_______,	SPC_EXT,    _______,			KC_DOT,	    _______,	MO(_SYM2), 	_______,	_______
+											_______,	_______,	_______,	SPC_EXT,    _______,			KC_DOT,	    _______,	_______, 	_______,	_______
 	),
-    [_SYM2] = SYM_LAYER,
 	[_EXT] = LAYOUT(
 		_______,	TO(_YAY),	KC_TAB,		XXXXXXX,	OSM_ALT,	XXXXXXX,									    					KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		XXXXXXX,	_______,
 		_______,	OSM_GUI,	OSM_ALT,	OSM_SFT,    OSM_CTL,	CTRL_A,										    					KC_PGDN,	KC_LEFT,	KC_DOWN,	KC_RGHT,	KC_DEL,		_______,
@@ -99,7 +91,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 };
 
+
+// disable shift
+const custom_shift_key_t custom_shift_keys[] = {
+    {KC_GRAVE, KC_GRAVE},
+    {KC_1, KC_1},
+    {KC_2, KC_2},
+    {KC_3, KC_3},
+    {KC_4, KC_4},
+    {KC_5, KC_5},
+    {KC_6, KC_6},
+    {KC_7, KC_7},
+    {KC_8, KC_8},
+    {KC_9, KC_9},
+    {KC_0, KC_0},
+    {KC_MINUS, KC_MINUS},
+    {KC_EQUAL, KC_EQUAL},
+    {KC_LBRC, KC_LBRC},
+    {KC_RBRC, KC_RBRC},
+    {KC_BSLS, KC_BSLS},
+    {KC_SCLN, KC_SCLN},
+    {KC_QUOTE, KC_QUOTE},
+    {KC_COMMA, KC_COMMA},
+    {KC_DOT, KC_DOT},
+    {KC_SLASH, KC_SLASH},
+};
 // clang-format on
+
+uint8_t NUM_CUSTOM_SHIFT_KEYS = sizeof(custom_shift_keys) / sizeof(custom_shift_key_t);
 
 // oled
 
@@ -177,7 +196,6 @@ bool oled_task_user(void) {
                 oled_write_P(PSTR("Base\n"), false);
                 break;
             case _SYM:
-            case _SYM2:
                 oled_write_P(PSTR("Sym\n"), false);
                 break;
             case _NUM:
@@ -331,83 +349,95 @@ void fake_keypress(uint8_t row, uint8_t col, bool pressed) {
     in_fake_keypress = false;
 }
 
-// process record stuff
-
-// KC_LEFT_CTRL = 0x00E0,
-// KC_LEFT_SHIFT = 0x00E1,
-// KC_LEFT_ALT = 0x00E2,
-// KC_LEFT_GUI = 0x00E3,
-// KC_RIGHT_CTRL = 0x00E4,
-// KC_RIGHT_SHIFT = 0x00E5,
-// KC_RIGHT_ALT = 0x00E6,
-// KC_RIGHT_GUI = 0x00E7,
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-    if (!record->event.pressed) return true;
+    if (!process_custom_shift_keys(keycode, record)) {
+        return false;
+    }
     switch (keycode) {
-        case QK_MACRO_0: {
-            SEND_STRING("...");
-            return false;
-        }
         case CANCEL_6: {
-            layer_off(_YAY);
+            if (record->event.pressed) layer_off(_YAY);
             return true;
         }
         case ALT_TO6: {
-            bool alt_pressed = matrix_is_on(3, 0);
-            if (alt_pressed) fake_keypress(3, 0, false);
-            layer_move(_YAY);
-            if (alt_pressed) fake_keypress(3, 0, true);
+            if (record->event.pressed) {
+                bool alt_pressed = matrix_is_on(3, 0);
+                if (alt_pressed) fake_keypress(3, 0, false);
+                layer_move(_YAY);
+                if (alt_pressed) fake_keypress(3, 0, true);
+            }
+            return false;
+        }
+        case FUN_NUM: {
+            static uint8_t mo_layer = 0;
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    mo_layer = _NUM;
+                } else {
+                    mo_layer = _FUN;
+                }
+                layer_on(mo_layer);
+            } else {
+                layer_off(mo_layer);
+            }
+            uint8_t row   = record->event.key.row;
+            uint8_t col   = record->event.key.col;
+            uint8_t index = g_led_config.matrix_co[row][col];
+            set_last_layer_key(mo_layer, index);
             return false;
         }
         // check for normal modifiers
-        case KC_LEFT_CTRL ... KC_RIGHT_GUI: {
-            uint8_t row     = record->event.key.row;
-            uint8_t col     = record->event.key.col;
-            uint8_t index   = g_led_config.matrix_co[row][col];
-            uint8_t mod_num = keycode & 3;
-            set_last_osm_key(mod_num, index);
-            break;
-        }
-        // check for osm
-        case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX: {
-            uint8_t row   = record->event.key.row;
-            uint8_t col   = record->event.key.col;
-            uint8_t index = g_led_config.matrix_co[row][col];
-            for (uint8_t i = 0, b = 1; i < 4; i++, b <<= 1) {
-                if (keycode & b) {
-                    set_last_osm_key(i, index);
-                }
+        case KC_LEFT_CTRL ... KC_RIGHT_GUI:
+            if (record->event.pressed) {
+                uint8_t row     = record->event.key.row;
+                uint8_t col     = record->event.key.col;
+                uint8_t index   = g_led_config.matrix_co[row][col];
+                uint8_t mod_num = keycode & 3;
+                set_last_osm_key(mod_num, index);
+                break;
             }
-            break;
-        }
+        // check for osm
+        case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX:
+            if (record->event.pressed) {
+                uint8_t row   = record->event.key.row;
+                uint8_t col   = record->event.key.col;
+                uint8_t index = g_led_config.matrix_co[row][col];
+                for (uint8_t i = 0, b = 1; i < 4; i++, b <<= 1) {
+                    if (keycode & b) {
+                        set_last_osm_key(i, index);
+                    }
+                }
+                break;
+            }
         // check for MO
-        case QK_MOMENTARY ... QK_MOMENTARY_MAX: {
-            uint8_t layer = QK_MOMENTARY_GET_LAYER(keycode);
-            uint8_t row   = record->event.key.row;
-            uint8_t col   = record->event.key.col;
-            uint8_t index = g_led_config.matrix_co[row][col];
-            set_last_layer_key(layer, index);
-            break;
-        }
+        case QK_MOMENTARY ... QK_MOMENTARY_MAX:
+            if (record->event.pressed) {
+                uint8_t layer = QK_MOMENTARY_GET_LAYER(keycode);
+                uint8_t row   = record->event.key.row;
+                uint8_t col   = record->event.key.col;
+                uint8_t index = g_led_config.matrix_co[row][col];
+                set_last_layer_key(layer, index);
+                break;
+            }
 
         // check for LT
-        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX: {
-            uint8_t layer = QK_LAYER_TAP_GET_LAYER(keycode);
-            uint8_t row   = record->event.key.row;
-            uint8_t col   = record->event.key.col;
-            uint8_t index = g_led_config.matrix_co[row][col];
-            set_last_layer_key(layer, index);
-            break;
-        }
+        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+            if (record->event.pressed) {
+                uint8_t layer = QK_LAYER_TAP_GET_LAYER(keycode);
+                uint8_t row   = record->event.key.row;
+                uint8_t col   = record->event.key.col;
+                uint8_t index = g_led_config.matrix_co[row][col];
+                set_last_layer_key(layer, index);
+                break;
+            }
 
         default:
             break;
     }
 
     // if in layer 6, and any left thumb keys + right side is pressed, disable layer 6 and repress as if in layer 0
-    if (!in_fake_keypress && get_highest_layer(layer_state) == _YAY // in layer
-        && matrix_get_row(3)                                        // left thumb keys
-        && record->event.key.row >= 4                               // right side
+    if (record->event.pressed && !in_fake_keypress && get_highest_layer(layer_state) == _YAY // in layer
+        && matrix_get_row(3)                                                                 // left thumb keys
+        && record->event.key.row >= 4                                                        // right side
     ) {
         // un press all keys in earlier rows
         for (uint8_t row = 0; row <= record->event.key.row; row++) {
@@ -450,7 +480,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 }
 // just color, not brightness
 typedef struct {
-    const uint8_t h, s;
+    uint8_t h, s;
 } HS;
 
 // hues
@@ -496,11 +526,12 @@ const uint8_t cancel_hue = mag_red;
 HS row_color_normal[12] = {
     _US(super_hue), _NONE, _US(shift_hue), _US(ext_hue), _US(num_hue), _US(fun_hue), _SPC, _US(sym_hue), _US(alt_hue), _US(adj_hue),
 };
+HS fun_num_shift_color = _US(num_hue);
 
 HS row_color_yay[12] = {_SS(cancel_hue), _SS(cancel_hue), _US(shift_hue), _SPC, _US(alt_hue), _SS(orange), _SS(orange), _SS(orange), _SS(cancel_hue), _SS(cancel_hue)};
 
 HS layer_colors[_MAX + 1] = {
-    [_BASE] = _US(base_hue), [_SYM] = _US(sym_hue), [_NUM] = _US(num_hue), [_SYM2] = _US(sym_hue), [_EXT] = _US(ext_hue), [_FUN] = _US(fun_hue), [_ADJ] = _US(adj_hue), [_YAY] = _US(yay_hue),
+    [_BASE] = _US(base_hue), [_SYM] = _US(sym_hue), [_NUM] = _US(num_hue), [_EXT] = _US(ext_hue), [_FUN] = _US(fun_hue), [_ADJ] = _US(adj_hue), [_YAY] = _US(yay_hue),
 };
 
 uint8_t mod_hues[] = {ctrl_hue, shift_hue, alt_hue, super_hue};
@@ -558,7 +589,11 @@ bool rgb_matrix_indicators_user(void) {
 
     HS* row_colors = layer == _YAY ? row_color_yay : row_color_normal;
     for (int i = 0; i < 12; ++i) {
-        RGB color = hsv_to_rgb((HSV){row_colors[i].h, row_colors[i].s, rgb_matrix_config.hsv.v});
+        HS curColor = row_colors[i];
+        if (i == 5 && get_mods() & MOD_MASK_SHIFT) {
+            curColor = fun_num_shift_color;
+        }
+        RGB color = hsv_to_rgb((HSV){curColor.h, curColor.s, rgb_matrix_config.hsv.v});
         rgb_matrix_set_color(lower_row[i], color.r, color.g, color.b);
     }
 
@@ -567,7 +602,7 @@ bool rgb_matrix_indicators_user(void) {
         if (b & mods) {
             int8_t index = last_change_keys.osm[i];
             if (index != -1) {
-                RGB color = hsv_to_rgb((HSV){mod_hues[i], 255, rgb_matrix_config.hsv.v + 40});
+                RGB color = hsv_to_rgb((HSV){mod_hues[i], 255, rgb_matrix_config.hsv.v + 50});
                 rgb_matrix_set_color(index, color.r, color.g, color.b);
             }
         }
@@ -577,7 +612,7 @@ bool rgb_matrix_indicators_user(void) {
     if (layer != 0) {
         int8_t index = last_change_keys.layer[layer];
         if (index != -1) {
-            RGB color = hsv_to_rgb((HSV){layer_colors[layer].h, 255, rgb_matrix_config.hsv.v + 40});
+            RGB color = hsv_to_rgb((HSV){layer_colors[layer].h, 255, rgb_matrix_config.hsv.v + 50});
             rgb_matrix_set_color(index, color.r, color.g, color.b);
         }
     }

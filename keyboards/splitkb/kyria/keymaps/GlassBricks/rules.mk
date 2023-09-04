@@ -19,3 +19,5 @@ COMMAND_ENABLE = no
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
 MAGIC_KEYCODE_ENABLE = no
+
+SRC += features/custom_shift_keys.c

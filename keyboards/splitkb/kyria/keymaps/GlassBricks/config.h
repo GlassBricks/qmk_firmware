@@ -26,7 +26,7 @@
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
 #define SPLIT_MODS_ENABLE
-#define SPLIT_WPM_ENABLE
+// #define SPLIT_WPM_ENABLE
 #define SPLIT_ACTIVITY_ENABLE
 
 #define SPLIT_TRANSACTION_IDS_USER LAST_LAYER_SYNC
@@ -53,7 +53,7 @@
 #    define RGB_MATRIX_KEYPRESSES
 #    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 
-#    define RGB_MATRIX_TIMEOUT (60 * 5 * 1000)
+#    define RGB_MATRIX_TIMEOUT (60000*2)
 #    define RGB_DISABLE_WHEN_USB_SUSPENDED
 #    ifndef RGB_MATRIX_MAXIMUM_BRIGHTNESS
 #        define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150
@@ -66,10 +66,10 @@
 // #    define RGB_MATRIX_DEFAULT_VAL 255
 #    define RGB_MATRIX_DEFAULT_SPD 127
 
-#   define RGB_MATRIX_HUE_STEP 8
-#   define RGB_MATRIX_SAT_STEP 8
-#   define RGB_MATRIX_VAL_STEP 8
-#   define RGB_MATRIX_SPD_STEP 8
+#    define RGB_MATRIX_HUE_STEP 8
+#    define RGB_MATRIX_SAT_STEP 8
+#    define RGB_MATRIX_VAL_STEP 8
+#    define RGB_MATRIX_SPD_STEP 8
 
 // effects
 // #    define ENABLE_RGB_MATRIX_ALPHAS_MODS
@@ -126,15 +126,15 @@
 // #define DEBUG_MATRIX_SCAN_RATE
 
 // #define ACTION_DEBUG
-//#define CONSOLE_ENABLE
+// #define CONSOLE_ENABLE
 
- #ifdef CONSOLE_ENABLE
+#ifdef CONSOLE_ENABLE
 //    #define DEBUG_MATRIX_SCAN_RATE
-    #define ACTION_DEBUG
-    #ifdef NO_DEBUG
-    #    undef NO_DEBUG
-    #endif
-    #ifdef NO_PRINT
-    #    undef NO_PRINT
-    #endif
- #endif
+#    define ACTION_DEBUG
+#    ifdef NO_DEBUG
+#        undef NO_DEBUG
+#    endif
+#    ifdef NO_PRINT
+#        undef NO_PRINT
+#    endif
+#endif
