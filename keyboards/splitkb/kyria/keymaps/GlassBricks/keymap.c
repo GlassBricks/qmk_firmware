@@ -24,7 +24,7 @@
 
 // layout
 
-enum layers { _BASE = 0, _SYM, _NUM, _EXT, _YAY, _FUN, _ADJ, _MAX = _ADJ };
+enum layers { _BASE = 0, _SYM, _EXT, _NUM, _YAY, _FUN, _ADJ, _MAX = _ADJ };
 
 #define OSM_GUI OSM(MOD_LGUI)
 #define OSM_ALT OSM(MOD_LALT)
@@ -69,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		_______,	TO(_YAY),	KC_TAB,		XXXXXXX,	OSM_ALT,	XXXXXXX,									    					KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		XXXXXXX,	_______,
 		_______,	OSM_GUI,	OSM_ALT,	OSM_SFT,    OSM_CTL,	CTRL_A,										    					KC_PGDN,	KC_LEFT,	KC_DOWN,	KC_RGHT,	KC_DEL,		_______,
 		MO(_FUN),	CTRL_Z,	    CTRL_X,  	CTRL_C,		KC_TAB,		CTRL_V,     _______,	_______,			_______,	_______,	_______,	KC_BSPC,	KC_APP,		KC_INS,		KC_PSCR,	_______,
-                                            _______,	_______,	_______,	_______,	_______,			_______,	_______,	_______,	_______,	_______
+                                            _______,	_______,	_______,	_______,	_______,			MO(_NUM),	_______,	_______,	_______,	_______
 	),
 	[_FUN] = LAYOUT(
 		_______,	_______,	KC_MPRV,	KC_MPLY,	KC_MNXT,	KC_VOLU,											                _______,	KC_F7,		KC_F8,		KC_F9,		_______,	_______,
@@ -111,32 +111,28 @@ const custom_shift_key_t custom_shift_keys[] = {
     {KC_RBRC, KC_RBRC},
     {KC_BSLS, KC_BSLS},
     {KC_SCLN, KC_SCLN},
-    {KC_QUOTE, KC_QUOTE},
     {KC_COMMA, KC_COMMA},
     {KC_DOT, KC_DOT},
     {KC_SLASH, KC_SLASH},
 };
 // clang-format on
 
-uint8_t NUM_CUSTOM_SHIFT_KEYS = sizeof(custom_shift_keys) / sizeof(custom_shift_key_t);
-
 // oled
-
-char      status_message[30];
-int32_t   status_message_time     = 0;
-const int STATUS_MESSAGE_DURATION = 5000; // 5 seconds
-
-#define set_status_message(...)                                        \
-    {                                                                  \
-        snprintf(status_message, sizeof(status_message), __VA_ARGS__); \
-        status_message_time = timer_read32();                          \
-    }
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_180;
 }
 
+char      status_message[30];
+int32_t   status_message_time     = 0;
+const int STATUS_MESSAGE_DURATION = 5000; // 5 seconds
+
+#    define set_status_message(...)                                        \
+        {                                                                  \
+            snprintf(status_message, sizeof(status_message), __VA_ARGS__); \
+            status_message_time = timer_read32();                          \
+        }
 // typedef union {
 //     uint32_t raw;
 //     struct PACKED {
@@ -484,35 +480,35 @@ typedef struct {
 } HS;
 
 // hues
-const uint8_t mag_red    = 250;
-const uint8_t red        = 0;
-const uint8_t orange     = 30 * 17 / 24;
-const uint8_t lemon      = 40 * 17 / 24;
-const uint8_t yellow     = 60 * 17 / 24;
-const uint8_t gyellow    = 70 * 17 / 24;
-const uint8_t lime       = 80 * 17 / 24;
-const uint8_t green      = 100 * 17 / 24;
-const uint8_t mint_green = 110 * 17 / 24;
-const uint8_t blue_green = 150 * 17 / 24;
-const uint8_t light_blue = 160 * 17 / 24;
-const uint8_t dark_blue  = 240 * 17 / 24;
-const uint8_t magenta    = 280 * 17 / 24;
-const uint8_t purple     = 300 * 17 / 24;
+enum {
+    mag_red    = 250,
+    red        = 0,
+    orange     = 30 * 17 / 24,
+    lemon      = 40 * 17 / 24,
+    yellow     = 60 * 17 / 24,
+    gyellow    = 70 * 17 / 24,
+    lime       = 80 * 17 / 24,
+    green      = 100 * 17 / 24,
+    mint_green = 110 * 17 / 24,
+    blue_green = 150 * 17 / 24,
+    light_blue = 160 * 17 / 24,
+    dark_blue  = 240 * 17 / 24,
+    magenta    = 280 * 17 / 24,
+    purple     = 300 * 17 / 24,
+    ctrl_hue   = green,
+    shift_hue  = lemon,
+    alt_hue    = mag_red,
+    super_hue  = light_blue,
+    base_hue   = light_blue,
+    sym_hue    = yellow,
+    num_hue    = purple,
+    ext_hue    = light_blue,
+    fun_hue    = dark_blue,
+    adj_hue    = magenta,
+    yay_hue    = orange,
 
-const uint8_t ctrl_hue  = green;
-const uint8_t shift_hue = lemon;
-const uint8_t alt_hue   = mag_red;
-const uint8_t super_hue = light_blue;
-
-const uint8_t base_hue = light_blue;
-const uint8_t sym_hue  = yellow;
-const uint8_t num_hue  = purple;
-const uint8_t ext_hue  = light_blue;
-const uint8_t fun_hue  = dark_blue;
-const uint8_t adj_hue  = magenta;
-const uint8_t yay_hue  = orange;
-
-const uint8_t cancel_hue = mag_red;
+    cancel_hue = mag_red,
+};
 
 #define _US(hue) \
     { hue, 170 }
@@ -534,7 +530,7 @@ HS layer_colors[_MAX + 1] = {
     [_BASE] = _US(base_hue), [_SYM] = _US(sym_hue), [_NUM] = _US(num_hue), [_EXT] = _US(ext_hue), [_FUN] = _US(fun_hue), [_ADJ] = _US(adj_hue), [_YAY] = _US(yay_hue),
 };
 
-uint8_t mod_hues[] = {ctrl_hue, shift_hue, alt_hue, super_hue};
+const uint8_t mod_hues[] = {ctrl_hue, shift_hue, alt_hue, super_hue};
 
 RGB color_add(RGB a, RGB b) {
     RGB c;
