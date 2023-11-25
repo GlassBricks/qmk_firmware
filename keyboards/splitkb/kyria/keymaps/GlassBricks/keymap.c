@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 // disable shift
-const custom_shift_key_t custom_shift_keys[] = {
+const custom_shift_key_t custom_shift_keys[20] = {
     {KC_GRAVE, KC_GRAVE},
     {KC_1, KC_1},
     {KC_2, KC_2},
@@ -115,6 +115,7 @@ const custom_shift_key_t custom_shift_keys[] = {
     {KC_DOT, KC_DOT},
     {KC_SLASH, KC_SLASH},
 };
+uint8_t NUM_CUSTOM_SHIFT_KEYS = sizeof(custom_shift_keys) / sizeof(custom_shift_key_t);
 // clang-format on
 
 // oled
