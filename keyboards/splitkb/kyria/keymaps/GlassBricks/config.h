@@ -34,9 +34,8 @@
 // keys
 
 #define ONESHOT_TIMEOUT 500
-
 #define TAPPING_TERM 150
-// #define HOLD_ON_OTHER_KEY_PRESS
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
 // encoder
 

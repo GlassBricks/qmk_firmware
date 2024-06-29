@@ -13,6 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#if defined(__JETBRAINS_IDE__)  || defined(__INTELLISENSE__)
+#undef QMK_KEYBOARD_H
+#define QMK_KEYBOARD_H ".build/obj_splitkb_kyria_rev3/src/default_keyboard.h"
+#include ".build/obj_splitkb_kyria_rev3/src/info_config.h"
+#endif
 
 #include QMK_KEYBOARD_H
 #include "transactions.h"
@@ -24,7 +29,7 @@
 
 // layout
 
-enum layers { _BASE = 0, _SYM, _EXT, _NUM, _YAY, _FUN, _ADJ, _MAX = _ADJ };
+enum layers { _BASE = 0, _YAY, _NUM, _SYM, _EXT, _FUN, _ADJ, _MAX = _ADJ };
 
 #define OSM_GUI OSM(MOD_LGUI)
 #define OSM_ALT OSM(MOD_LALT)
@@ -38,6 +43,7 @@ enum layers { _BASE = 0, _SYM, _EXT, _NUM, _YAY, _FUN, _ADJ, _MAX = _ADJ };
 #define CTRL_V LCTL(KC_V)
 
 #define SPC_EXT LT(_EXT, KC_SPC)
+#define BSL_NUM LT(_NUM, KC_BSLS)
 
 enum custom_keycodes {
     CANCEL_6 = QK_USER,
@@ -50,25 +56,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT(
 		KC_TAB,		KC_Q,		KC_W,		KC_F,		KC_P,		KC_B,															    KC_J,		KC_L,		KC_U,		KC_Y,		KC_SCLN,	KC_MUTE,
 		KC_ESC,		KC_A,		KC_R,		KC_S,		KC_T,		KC_G,														   		KC_M,		KC_N,		KC_E,		KC_I,		KC_O,		KC_MINS,
-		KC_LCTL,	KC_Z,		KC_X,		KC_C,		KC_D,		KC_V,		KC_SPC, 	KC_BSLS,			CW_TOGG,	KC_UNDS,	KC_K,		KC_H,		KC_COMM,	KC_DOT,		KC_QUOT,	KC_ENT,
-											KC_LGUI,	XXXXXXX,    KC_LSFT,	MO(_EXT),	MO(_NUM),			FUN_NUM,	KC_SPC,		MO(_SYM),	KC_LALT,	MO(_ADJ)
+		KC_LCTL,	KC_Z,		KC_X,		KC_C,		KC_D,		KC_V,		KC_SPC, 	BSL_NUM,            MO(_EXT),	KC_UNDS,	KC_K,		KC_H,		KC_COMM,	KC_DOT,		KC_QUOT,	KC_ENT,
+											KC_LGUI,	XXXXXXX,    KC_LSFT,	MO(_EXT),	QK_REPEAT_KEY,      FUN_NUM,	KC_SPC,		MO(_SYM),	KC_LALT,	MO(_ADJ)
 	),
 	[_SYM] = LAYOUT (
-        _______,	KC_SCRL,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																    KC_CIRC,	KC_PIPE,	KC_QUES,    KC_AMPR,	KC_SCLN,	_______,
-        KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,														    	KC_TILD,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	MC_0,
+        _______,	KC_SCRL,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																KC_CIRC,	KC_PIPE,	KC_QUES,    KC_AMPR,	KC_SCLN,	_______,
+        _______,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,														    KC_TILD,	KC_COLN,	KC_LPRN,	KC_RPRN,	KC_RCBR,	_______,
         MO(_NUM),	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	KC_UNDS,	_______,			_______,	_______,	KC_GRV,		KC_LCBR,	KC_DLR,		KC_DOT,		KC_DQUO,	_______,
                                             _______,	_______,	_______,	SPC_EXT,    _______,			_______,	_______,	_______,	_______,	_______
     ),
 	[_NUM] = LAYOUT(
 		_______,	ALT_TO6,	KC_LBRC,	KC_RBRC,	KC_PERC,	KC_AT,																KC_CIRC,	KC_7,		KC_8,		KC_9,		_______,	_______,
-		KC_BSPC,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,															KC_TILD,	KC_4,		KC_5,		KC_6,		KC_0,		_______,
+		_______,	KC_EXLM,	KC_MINS,	KC_PLUS,	KC_EQL,		KC_HASH,															KC_TILD,	KC_4,		KC_5,		KC_6,		KC_0,		_______,
 		_______,	KC_ASTR,	KC_LT,		KC_GT,		KC_SLSH,	KC_BSLS,	_______,	_______,			_______,	_______,    KC_BSPC,    KC_1,		KC_2,		KC_3,		KC_COMM,	_______,
-											_______,	_______,	_______,	SPC_EXT,    _______,			KC_DOT,	    _______,	_______, 	_______,	_______
+											_______,	_______,	_______,	SPC_EXT,    _______,			KC_DOT,	    _______,	MO(_SYM), 	_______,	_______
 	),
 	[_EXT] = LAYOUT(
-		_______,	TO(_YAY),	KC_TAB,		XXXXXXX,	OSM_ALT,	XXXXXXX,									    					KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		XXXXXXX,	_______,
+		_______,	TO(_YAY),	KC_TAB,		XXXXXXX,	OSM_ALT,	XXXXXXX,									    					KC_PGUP,	KC_HOME,	KC_UP,		KC_END,		KC_PSCR,	_______,
 		_______,	OSM_GUI,	OSM_ALT,	OSM_SFT,    OSM_CTL,	CTRL_A,										    					KC_PGDN,	KC_LEFT,	KC_DOWN,	KC_RGHT,	KC_DEL,		_______,
-		MO(_FUN),	CTRL_Z,	    CTRL_X,  	CTRL_C,		KC_TAB,		CTRL_V,     _______,	_______,			_______,	_______,	_______,	KC_BSPC,	KC_APP,		KC_INS,		KC_PSCR,	_______,
+		MO(_FUN),	CTRL_Z,	    CTRL_X,  	CTRL_C,		KC_TAB,		CTRL_V,     _______,	_______,			_______,	_______,	_______,	KC_BSPC,	KC_APP,		KC_DOT,		KC_INS,	_______,
                                             _______,	_______,	_______,	_______,	_______,			MO(_NUM),	_______,	_______,	_______,	_______
 	),
 	[_FUN] = LAYOUT(
@@ -86,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_YAY] = LAYOUT(
 		_______,	_______,	_______,	_______,	_______,	_______,															_______,	_______,	_______,	_______,	_______,	_______,
 		KC_ESC,		_______,	_______,	_______,	_______,	_______,															_______,	_______,	_______,	_______,	_______,	_______,
-		KC_LCTL,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	KC_BSLS,			XXXXXXX,	_______,	_______,    _______,   	_______,	_______,	_______,	CANCEL_6,
+		KC_LCTL,	_______,	_______,	_______,	_______,	_______,	KC_MINS,	BSL_NUM,			XXXXXXX,	_______,	_______,    _______,   	_______,	_______,	_______,	CANCEL_6,
 											TG(_YAY),  	TG(_YAY),	KC_LSFT,	KC_SPC,		KC_LALT,			MO(_FUN),   CANCEL_6,   CANCEL_6,   CANCEL_6,   CANCEL_6
 	),
 };
@@ -117,6 +123,15 @@ const custom_shift_key_t custom_shift_keys[20] = {
 };
 uint8_t NUM_CUSTOM_SHIFT_KEYS = sizeof(custom_shift_keys) / sizeof(custom_shift_key_t);
 // clang-format on
+
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case BSL_NUM:
+            return true;
+        default:
+            return false;
+    }
+}
 
 // oled
 
@@ -511,14 +526,10 @@ enum {
     cancel_hue = mag_red,
 };
 
-#define _US(hue) \
-    { hue, 170 }
-#define _SS(hue) \
-    { hue, 240 }
-#define _NONE \
-    { light_blue, 40 }
-#define _SPC \
-    { mint_green, 200 }
+#define _US(hue) {hue, 170}
+#define _SS(hue) {hue, 240}
+#define _NONE {light_blue, 40}
+#define _SPC {mint_green, 200}
 
 HS row_color_normal[12] = {
     _US(super_hue), _NONE, _US(shift_hue), _US(ext_hue), _US(num_hue), _US(fun_hue), _SPC, _US(sym_hue), _US(alt_hue), _US(adj_hue),
